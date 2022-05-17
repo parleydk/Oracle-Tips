@@ -12,8 +12,6 @@ set verify off
 set sqlformat ansiconsole
 set FLUSH OFF
 
-
-
 spool '&&varfolder\temp_script.sql'
 
 prompt set echo off
@@ -24,11 +22,10 @@ prompt set feedback off
 prompt SET sqlformat ansiconsole
 prompt set termout off
 
-
 select distinct 'spool ' || '"' || '&&varfolder\' || owner||'.'||view_name||'.sql' || '"' || ';' || chr(13) ||
         'SELECT text as "--' || view_name || '" from all_views where owner = '''||owner||''' and view_name = ''' || view_name || ''';' || chr(13)
 as "--Script"
-from all_views where owner = '&&varowner';
+from all_views where owner = '&&varowner' order by "--Script";
 
 prompt set termout on
 prompt spool off
@@ -36,5 +33,5 @@ prompt spool off
 set flush on
 spool off
 
-
 @'&&varfolder\temp_script.sql'
+host del "&&varfolder\temp_script.sql" /*Windows Only*/
